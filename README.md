@@ -14,7 +14,7 @@ OpenAI-compatible API (`http://localhost:1234/v1`).
 3. Create the venv (skip if `env/` already exists):
    ```
    python3 -m venv env
-   env/bin/pip install openai
+   env/bin/pip install -r requirements.txt
    ```
 4. Run:
    ```
