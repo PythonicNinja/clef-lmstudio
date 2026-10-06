@@ -11,19 +11,27 @@ OpenAI-compatible API (`http://localhost:1234/v1`).
    ```
    curl -s localhost:1234/v1/models | grep clef-flash
    ```
-3. Create the venv (skip if `env/` already exists):
+3. Set up the venv and dependencies:
    ```
-   python3 -m venv env
-   env/bin/pip install -r requirements.txt
+   make dev_install                          # uses python3 (3.10+)
+   make dev_install PYTHON=python3.12        # or pick a specific Python
    ```
-4. Run:
+4. Run both examples (~1 min):
    ```
-   env/bin/python main.py       # plain + streamed call
-   env/bin/python example1.py   # probability selection demo (~1 min)
+   make dev_run
    ```
-   Or `source env/bin/activate` first, then `python main.py`.
 
 To use a different host or model name: `ClefFlash(base_url="http://host:1234/v1", model="...")`.
+
+## Make targets
+
+| Command | What it does |
+|---|---|
+| `make dev_install` | Checks Python is 3.10+, creates `env/` (rebuilds it if it was made with a different Python), installs `requirements.txt` |
+| `make dev_run` | Runs `main.py` then `example1.py` |
+
+Without make: `python3 -m venv env && env/bin/pip install -r requirements.txt`,
+then `env/bin/python main.py` / `env/bin/python example1.py`.
 
 ## Files
 
@@ -31,6 +39,8 @@ To use a different host or model name: `ClefFlash(base_url="http://host:1234/v1"
   puts its answer in `reasoning_content`, so `chat()` returns reasoning + content.
 - `main.py`: one plain call and one streamed call.
 - `example1.py`: probability selection for support-ticket routing.
+- `Makefile`: `dev_install` and `dev_run`.
+- `requirements.txt`: dependencies (`openai`).
 
 ## example1: probability selection
 
@@ -44,7 +54,7 @@ LM Studio returns no token logprobs for this model, so the percentages are the m
 own stated estimates, not computed probabilities.
 
 ```
-$ env/bin/python example1.py
+$ make dev_run    # example1.py part
 > I was charged twice for my Pro plan this month. Please refund the duplicate.
     billing          100.0% ####################
     margin=1.00 entropy=0.00 (4.6s)
